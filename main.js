@@ -274,4 +274,4 @@ function init() {
 }
 
 // Run on page load
-document.addEventListener('DOMContentLoaded', init);
+document.addEventListener('DOMContentLoaded', init); 
