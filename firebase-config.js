@@ -20,4 +20,4 @@ const auth = firebase.auth();
 
 // Export for use in other files
 window.db = db;
-window.auth = auth;
+window.auth = auth; 
