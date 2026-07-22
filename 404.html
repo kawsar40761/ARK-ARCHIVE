@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Page Not Found | ARK ARCHIVE</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&family=Inter:wght@300;400;600&display=swap" rel="stylesheet" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    
+    <style>
+        /* ===== RESET & ROOT ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #00BFFF;
+            --primary-dark: #0099CC;
+            --accent: #FF1493;
+            --dark: #0A0A0A;
+            --dark-secondary: #1A1A1A;
+            --white: #FFFFFF;
+            --gray-100: #F4F4F4;
+            --gray-200: #E0E0E0;
+            --gray-400: #888888;
+            --gray-500: #666666;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--white);
+            color: var(--dark);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            margin: 0;
+        }
+
+        /* ===== 404 CONTAINER ===== */
+        .error-container {
+            max-width: 700px;
+            width: 100%;
+            text-align: center;
+            padding: 60px 40px;
+            background: var(--white);
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+            border: 1px solid var(--gray-200);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Decorative accent line */
+        .error-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+        }
+
+        /* ===== ILLUSTRATION ===== */
+        .error-illustration {
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .error-illustration .icon-bg {
+            width: 140px;
+            height: 140px;
+            background: linear-gradient(135deg, rgba(0, 191, 255, 0.08), rgba(255, 20, 147, 0.08));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .error-illustration i {
+            font-size: 64px;
+            color: var(--primary);
+            opacity: 0.8;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-12px); }
+        }
+
+        /* ===== TYPOGRAPHY ===== */
+        .error-code {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 900;
+            font-size: 80px;
+            line-height: 1;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        .error-title {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 28px;
+            color: var(--dark);
+            margin-bottom: 12px;
+        }
+
+        .error-description {
+            font-size: 16px;
+            color: var(--gray-500);
+            line-height: 1.8;
+            max-width: 480px;
+            margin: 0 auto 30px;
+        }
+
+        .error-description strong {
+            color: var(--dark);
+        }
+
+        /* ===== SEARCH BOX ===== */
+        .error-search {
+            display: flex;
+            max-width: 420px;
+            margin: 0 auto 30px;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .error-search input {
+            flex: 1;
+            min-width: 180px;
+            padding: 14px 20px;
+            border: 2px solid var(--gray-200);
+            border-radius: 12px;
+            font-size: 15px;
+            font-family: 'Inter', sans-serif;
+            transition: border-color 0.3s;
+            outline: none;
+        }
+
+        .error-search input:focus {
+            border-color: var(--primary);
+        }
+
+        .error-search button {
+            padding: 14px 28px;
+            background: var(--primary);
+            color: var(--white);
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .error-search button:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        /* ===== ACTION BUTTONS ===== */
+        .error-actions {
+            display: flex;
+            gap: 14px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 36px;
+            background: var(--accent);
+            color: var(--white);
+            border: none;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 15px;
+            text-decoration: none;
+            transition: background 0.3s, transform 0.2s;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .btn-primary:hover {
+            background: var(--dark);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 36px;
+            background: var(--gray-100);
+            color: var(--dark);
+            border: 2px solid var(--gray-200);
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 15px;
+            text-decoration: none;
+            transition: background 0.3s, border-color 0.3s;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .btn-secondary:hover {
+            background: var(--gray-200);
+            border-color: var(--gray-400);
+        }
+
+        /* ===== FOOTER TEXT ===== */
+        .error-footer {
+            margin-top: 35px;
+            padding-top: 25px;
+            border-top: 1px solid var(--gray-200);
+            font-size: 13px;
+            color: var(--gray-400);
+        }
+
+        .error-footer a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .error-footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 600px) {
+            .error-container {
+                padding: 40px 24px;
+            }
+            .error-code {
+                font-size: 56px;
+            }
+            .error-title {
+                font-size: 22px;
+            }
+            .error-illustration .icon-bg {
+                width: 100px;
+                height: 100px;
+            }
+            .error-illustration i {
+                font-size: 44px;
+            }
+            .btn-primary,
+            .btn-secondary {
+                width: 100%;
+                justify-content: center;
+            }
+            .error-search {
+                flex-direction: column;
+            }
+            .error-search input {
+                min-width: unset;
+                width: 100%;
+            }
+            .error-search button {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        /* ===== DARK MODE SUPPORT (ঐচ্ছিক) ===== */
+        @media (prefers-color-scheme: dark) {
+            body {
+                background: var(--dark);
+            }
+            .error-container {
+                background: var(--dark-secondary);
+                border-color: rgba(255, 255, 255, 0.06);
+            }
+            .error-title {
+                color: var(--white);
+            }
+            .error-description {
+                color: var(--gray-400);
+            }
+            .error-description strong {
+                color: var(--white);
+            }
+            .error-search input {
+                background: var(--dark);
+                border-color: rgba(255, 255, 255, 0.1);
+                color: var(--white);
+            }
+            .error-search input:focus {
+                border-color: var(--primary);
+            }
+            .btn-secondary {
+                background: rgba(255, 255, 255, 0.05);
+                border-color: rgba(255, 255, 255, 0.1);
+                color: var(--white);
+            }
+            .btn-secondary:hover {
+                background: rgba(255, 255, 255, 0.1);
+            }
+            .error-footer {
+                border-top-color: rgba(255, 255, 255, 0.06);
+                color: var(--gray-500);
+            }
+            .error-illustration .icon-bg {
+                background: rgba(0, 191, 255, 0.06);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="error-container">
+        <!-- Illustration -->
+        <div class="error-illustration">
+            <div class="icon-bg">
+                <i class="fas fa-compass"></i>
+            </div>
+        </div>
+
+        <!-- Error Code -->
+        <div class="error-code">404</div>
+
+        <!-- Title -->
+        <h1 class="error-title">Page Not Found</h1>
+
+        <!-- Description -->
+        <p class="error-description">
+            Oops! The page you're looking for doesn't exist or has been moved.
+            <br />
+            <strong>Don't worry</strong> — let's get you back on track.
+        </p>
+
+        <!-- Search Box (optional, but helpful) -->
+        <form class="error-search" onsubmit="return false;">
+            <input type="text" id="errorSearchInput" placeholder="Search ARK ARCHIVE..." />
+            <button type="button" onclick="performSearch()">
+                <i class="fas fa-search"></i> Search
+            </button>
+        </form>
+
+        <!-- Action Buttons -->
+        <div class="error-actions">
+            <a href="index.html" class="btn-primary">
+                <i class="fas fa-home"></i> Back to Home
+            </a>
+            <a href="javascript:history.back()" class="btn-secondary">
+                <i class="fas fa-arrow-left"></i> Go Back
+            </a>
+        </div>
+
+        <!-- Footer -->
+        <div class="error-footer">
+            <p>
+                Need help? <a href="mailto:support@arkarchive.com">support@arkarchive.com</a>
+                &nbsp;·&nbsp; <a href="index.html">ARK ARCHIVE</a>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        /**
+         * Simple search function — redirects to Google search
+         * You can replace this with your own search logic.
+         */
+        function performSearch() {
+            const query = document.getElementById('errorSearchInput').value.trim();
+            if (query) {
+                window.location.href = 'https://www.google.com/search?q=site:arkarchive.com+' + encodeURIComponent(query);
+            } else {
+                alert('Please enter a search term.');
+            }
+        }
+
+        // Allow "Enter" key to trigger search
+        document.getElementById('errorSearchInput').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                performSearch();
+            }
+        });
+    </script>
+
+</body>
+</html>
