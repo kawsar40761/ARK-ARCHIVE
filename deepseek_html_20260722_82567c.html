@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARK ARCHIVE | Global Eternal Legacy</title>
+    <meta name="description" content="Join ARK ARCHIVE in planting 1 Billion trees. Protect our future, one child, one fruit tree, one eternal legacy.">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+</head>
+<body>
+
+<!-- ===== SOCIAL SIDEBAR ===== -->
+<div class="social-sidebar">
+    <div class="social-icons">
+        <a href="https://wa.me/8801576940717" target="_blank" class="social-icon whatsapp" title="Customer Support 24/7">
+            <i class="fab fa-whatsapp"></i>
+            <span class="social-label">Support</span>
+        </a>
+        <a href="#" target="_blank" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+        <a href="#" target="_blank" class="social-icon"><i class="fab fa-instagram"></i></a>
+        <a href="#" target="_blank" class="social-icon"><i class="fab fa-youtube"></i></a>
+        <a href="#" target="_blank" class="social-icon"><i class="fab fa-tiktok"></i></a>
+        <a href="#" target="_blank" class="social-icon"><i class="fab fa-x-twitter"></i></a>
+        <a href="#" target="_blank" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+    </div>
+</div>
+
+<!-- ===== NAVBAR ===== -->
+<nav class="navbar" id="navbar">
+    <div class="nav-container">
+        <div class="nav-brand">
+            <span class="brand-text">ARK</span>
+            <span class="brand-sub">ARCHIVE</span>
+        </div>
+        
+        <div class="nav-stats" id="navStats">
+            <div class="stat-item">
+                <span class="stat-number" id="statCollected">$0</span>
+                <span class="stat-label">Collected</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item">
+                <span class="stat-number" id="statBought">0</span>
+                <span class="stat-label">Trees Bought</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item">
+                <span class="stat-number" id="statHanded">0</span>
+                <span class="stat-label">Handed Over</span>
+            </div>
+        </div>
+
+        <div class="nav-links">
+            <a href="#philosophy" class="nav-link">Philosophy</a>
+            <a href="#gallery" class="nav-link">Gallery</a>
+            <a href="#archive" class="nav-link">Archive</a>
+            <a href="#about" class="nav-link">About</a>
+            <button class="donate-btn" id="donateBtn">Donate</button>
+        </div>
+
+        <button class="mobile-toggle" id="mobileToggle">
+            <i class="fas fa-bars"></i>
+        </button>
+    </div>
+</nav>
+
+<!-- ===== MOBILE MENU ===== -->
+<div class="mobile-menu" id="mobileMenu">
+    <a href="#philosophy">Philosophy</a>
+    <a href="#gallery">Gallery</a>
+    <a href="#archive">Archive</a>
+    <a href="#about">About</a>
+    <button class="donate-btn" onclick="toggleDrawer()">Donate</button>
+</div>
+
+<!-- ===== HERO SECTION ===== -->
+<section class="hero" id="hero">
+    <div class="hero-content">
+        <h1 class="hero-title">Global Reforestation<br>Project</h1>
+        <p class="hero-description">
+            Defending our air, protecting our future. One Child, One Fruit Tree, One Eternal Legacy.
+        </p>
+        <div class="hero-actions">
+            <button class="hero-donate-btn" onclick="toggleDrawer()">
+                Donate $1 per Tree
+            </button>
+            <span class="hero-stats">
+                <span class="hero-stat">
+                    <strong id="heroCollected">$0</strong> Raised
+                </span>
+                <span class="hero-stat">
+                    <strong id="heroTrees">0</strong> Trees Planted
+                </span>
+            </span>
+        </div>
+    </div>
+    <div class="hero-bg"></div>
+</section>
+
+<!-- ===== PHILOSOPHY SECTION ===== -->
+<section class="philosophy" id="philosophy">
+    <div class="container">
+        <div class="philosophy-header">
+            <h2 class="section-title">Mission Philosophy</h2>
+            <p class="section-subtitle">Protecting our air, securing our future</p>
+        </div>
+
+        <div class="philosophy-grid">
+            <div class="philosophy-card featured">
+                <div class="card-badge">The 1 Billion Mission</div>
+                <h3>A Biological Shield for Humanity</h3>
+                <p>Today, the global population has surpassed <strong>8.2 Billion</strong>. Every single soul on this planet depends on the same air, yet our atmosphere is under constant threat from industrial fallout and ecological instability.</p>
+                <p class="highlight-text">8 Billion People, 1 Billion Trees. Join the mission to protect the air we all breathe.</p>
+            </div>
+
+            <div class="philosophy-card">
+                <h3>Environmental Shield & Natural Defense</h3>
+                <p>Global environmental shifts do more than visible damage; they destroy the very air we breathe. Modern industrialization releases toxic gases, chemical residues, and massive amounts of dust into the atmosphere.</p>
+                <p>Trees act as massive biological filters, trapping toxic dust and absorbing harmful gases. By planting millions of trees, we are building a natural shield for our children.</p>
+            </div>
+
+            <div class="philosophy-card">
+                <h3>The Roadmap to 1 Billion</h3>
+                <p>Our journey begins with a focused, phase-based approach. The first phase is to provide a fruit-bearing tree to every student from primary to secondary levels.</p>
+                <p>By empowering the youth, we are planting the seeds of environmental responsibility in the hearts of the next generation.</p>
+            </div>
+
+            <div class="philosophy-card">
+                <h3>Where Does Your Money Go?</h3>
+                <p>Transparency is our foundation. We have invested zero donor capital into this website or our operations. Every dollar you send is converted directly into a sapling.</p>
+                <p>Our team covers all personal expenses out of pocket.</p>
+            </div>
+
+            <div class="philosophy-card">
+                <h3>Why Fruit-Bearing Trees?</h3>
+                <p>We choose fruit trees to create a dual-purpose legacy: <strong>Sustainable Nutrition</strong> for the youth and <strong>Carbon Sequestration</strong> for the planet.</p>
+                <p>It is a direct investment in human health and ecological balance.</p>
+            </div>
+
+            <div class="philosophy-card full-width">
+                <h3>The Silent Witness & Universal Legacy</h3>
+                <p>Every tree is recorded in the ARK ARCHIVE. By claiming a plot, your name is etched into the digital record of this revolution—a testament to your contribution to a cleaner, greener world.</p>
+                <p>This is a permanent digital and physical record of humanity coming together to ensure we can all breathe tomorrow.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== GALLERY SECTION ===== -->
+<section class="gallery-section" id="gallery">
+    <div class="container">
+        <h2 class="section-title">Mission in Progress</h2>
+        <p class="section-subtitle">Real-time updates from the field</p>
+        
+        <div class="gallery-grid" id="missionGallery">
+            <!-- Gallery items loaded from Firebase -->
+        </div>
+    </div>
+</section>
+
+<!-- ===== ARCHIVE SECTION ===== -->
+<section class="archive-section" id="archive">
+    <div class="container">
+        <div class="archive-header">
+            <h2 class="section-title light">The Legacy Archive Grid</h2>
+            <p class="section-subtitle light">Every tree, every donor, every legacy</p>
+        </div>
+        <div class="donor-grid" id="donorGrid">
+            <!-- Donors loaded from Firebase -->
+        </div>
+        <div class="archive-footer">
+            <span class="archive-count" id="donorCount">Loading donors...</span>
+        </div>
+    </div>
+</section>
+
+<!-- ===== ABOUT SECTION ===== -->
+<section class="about-section" id="about">
+    <div class="container">
+        <div class="about-content">
+            <div class="about-text">
+                <h2 class="section-title">About ARK ARCHIVE</h2>
+                <p>ARK ARCHIVE is a global initiative dedicated to reforestation and environmental protection. Our mission is to plant 1 Billion fruit-bearing trees, creating a sustainable future for generations to come.</p>
+                <p>We believe in transparency, accountability, and the power of collective action. Every donor becomes part of a permanent legacy, recorded in our digital archive for eternity.</p>
+                <div class="about-stats">
+                    <div>
+                        <strong id="aboutDonors">0</strong>
+                        <span>Donors</span>
+                    </div>
+                    <div>
+                        <strong id="aboutTrees">0</strong>
+                        <span>Trees Planted</span>
+                    </div>
+                    <div>
+                        <strong id="aboutCountries">1</strong>
+                        <span>Countries</span>
+                    </div>
+                </div>
+            </div>
+            <div class="about-image">
+                <img src="https://images.unsplash.com/photo-1542601906990-b4d3fb773b09?auto=format&fit=crop&q=80&w=1000" alt="About ARK ARCHIVE">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer">
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <h3>ARK ARCHIVE</h3>
+                <p>Protecting our air, securing our future</p>
+            </div>
+            <div class="footer-links">
+                <a href="#philosophy">Philosophy</a>
+                <a href="#gallery">Gallery</a>
+                <a href="#archive">Archive</a>
+                <a href="#about">About</a>
+            </div>
+            <div class="footer-social">
+                <a href="#" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" target="_blank"><i class="fab fa-instagram"></i></a>
+                <a href="#" target="_blank"><i class="fab fa-youtube"></i></a>
+                <a href="#" target="_blank"><i class="fab fa-tiktok"></i></a>
+                <a href="#" target="_blank"><i class="fab fa-x-twitter"></i></a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 ARK ARCHIVE. All rights reserved.</p>
+            <p>Made with ❤️ for a greener future</p>
+        </div>
+    </div>
+</footer>
+
+<!-- ===== DONATION DRAWER ===== -->
+<div class="donation-drawer" id="donationDrawer">
+    <div class="drawer-header">
+        <h2>Donation Portal</h2>
+        <button class="drawer-close" onclick="toggleDrawer()">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+    
+    <div class="drawer-body">
+        <div class="drawer-form">
+            <input type="text" id="donorName" class="drawer-input" placeholder="Donor Full Name">
+            <input type="email" id="donorEmail" class="drawer-input" placeholder="Email Address">
+            <input type="number" id="treeQuantity" class="drawer-input" placeholder="Number of Trees">
+            <button class="drawer-submit" onclick="submitDonation()">
+                Submit & View Addresses
+            </button>
+        </div>
+
+        <div class="payment-methods" id="paymentMethods" style="display:none;">
+            <h3>Payment Methods</h3>
+            <div class="payment-card" onclick="copyText('01756206213')">
+                <h4>bKash: 01756206213</h4>
+                <span class="payment-limit">Max: $100</span>
+                <span class="payment-info">International: Use Remittance to bKash</span>
+            </div>
+            <div class="payment-card" onclick="copyText('01576940717')">
+                <h4>bKash: 01576940717</h4>
+                <span class="payment-limit">Max: $100</span>
+            </div>
+            <div class="payment-card" onclick="copyText('017562062134')">
+                <h4>Rocket: 017562062134</h4>
+                <span class="payment-limit">Max: $400</span>
+            </div>
+            <div class="payment-card crypto" onclick="copyText('912221034')">
+                <h4>Binance UID: 912221034</h4>
+                <span class="payment-limit">No Limit</span>
+            </div>
+            <div class="payment-card crypto" onclick="copyText('TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6')">
+                <h4>USDT TRC20</h4>
+                <p class="crypto-address">TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6</p>
+                <span class="payment-limit">No Limit</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== CONGRATS POPUP ===== -->
+<div class="congrats-popup" id="congratsPopup">
+    <div class="popup-content">
+        <h2 id="congratsTitle">Congratulations!</h2>
+        <p id="congratsDesc">You've successfully requested to plant trees!</p>
+        <div class="popup-steps">
+            <strong>Next Steps:</strong>
+            <ol>
+                <li>Complete payment using the provided addresses</li>
+                <li>Contact Customer Support via WhatsApp</li>
+                <li>Provide Name, Photo, and Social Media link</li>
+                <li>Confirm the number of trees donated</li>
+            </ol>
+        </div>
+        <button class="popup-btn" onclick="closeCongrats()">Excellent!</button>
+    </div>
+</div>
+
+<!-- ===== ADMIN ACCESS ===== -->
+<a href="admin.html" class="admin-access" id="adminAccess">⚙️</a>
+
+<!-- ===== SCRIPTS ===== -->
+<script src="js/firebase-config.js"></script>
+<script src="js/main.js"></script>
+
+</body>
+</html>

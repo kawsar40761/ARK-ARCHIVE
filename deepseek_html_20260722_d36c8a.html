@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARK ARCHIVE | Admin Panel</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/admin.css">
+    
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+</head>
+<body>
+    <div class="admin-wrapper">
+        <!-- ===== ADMIN SIDEBAR ===== -->
+        <aside class="admin-sidebar" id="adminSidebar">
+            <div class="sidebar-header">
+                <h2>ARK <span>ADMIN</span></h2>
+                <button class="sidebar-toggle" id="sidebarToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <ul>
+                    <li class="active" data-page="dashboard">
+                        <a href="#dashboard"><i class="fas fa-chart-pie"></i> Dashboard</a>
+                    </li>
+                    <li data-page="gallery">
+                        <a href="#gallery"><i class="fas fa-images"></i> Gallery</a>
+                    </li>
+                    <li data-page="donors">
+                        <a href="#donors"><i class="fas fa-users"></i> Donors</a>
+                    </li>
+                    <li data-page="requests">
+                        <a href="#requests"><i class="fas fa-inbox"></i> Requests</a>
+                    </li>
+                    <li data-page="settings">
+                        <a href="#settings"><i class="fas fa-cog"></i> Settings</a>
+                    </li>
+                    <li class="logout-item">
+                        <a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- ===== ADMIN MAIN ===== -->
+        <main class="admin-main">
+            <header class="admin-header">
+                <div class="header-left">
+                    <h1 id="pageTitle">Dashboard</h1>
+                    <span class="admin-badge">Admin</span>
+                </div>
+                <div class="header-right">
+                    <span class="admin-email" id="adminEmail">admin@example.com</span>
+                    <img src="assets/images/default-avatar.png" alt="Admin" class="admin-avatar">
+                </div>
+            </header>
+
+            <!-- ===== DASHBOARD PAGE ===== -->
+            <section class="admin-page active" id="page-dashboard">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon blue"><i class="fas fa-dollar-sign"></i></div>
+                        <div class="stat-info">
+                            <h3 id="adminCollected">$0</h3>
+                            <p>Total Collected</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon green"><i class="fas fa-tree"></i></div>
+                        <div class="stat-info">
+                            <h3 id="adminTrees">0</h3>
+                            <p>Trees Planted</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon orange"><i class="fas fa-hand-holding-heart"></i></div>
+                        <div class="stat-info">
+                            <h3 id="adminDonors">0</h3>
+                            <p>Total Donors</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon purple"><i class="fas fa-images"></i></div>
+                        <div class="stat-info">
+                            <h3 id="adminGallery">0</h3>
+                            <p>Gallery Items</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="admin-cards">
+                    <div class="card">
+                        <h3>Recent Activity</h3>
+                        <div id="recentActivity">
+                            <p class="empty-state">No recent activity</p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <h3>Quick Actions</h3>
+                        <div class="quick-actions">
+                            <button onclick="navigateTo('gallery')" class="action-btn">
+                                <i class="fas fa-upload"></i> Upload Image
+                            </button>
+                            <button onclick="navigateTo('donors')" class="action-btn">
+                                <i class="fas fa-user-plus"></i> Add Donor
+                            </button>
+                            <button onclick="navigateTo('requests')" class="action-btn">
+                                <i class="fas fa-envelope"></i> View Requests
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===== GALLERY PAGE ===== -->
+            <section class="admin-page" id="page-gallery">
+                <div class="admin-toolbar">
+                    <button class="toolbar-btn primary" onclick="openUploadModal()">
+                        <i class="fas fa-upload"></i> Upload Image
+                    </button>
+                    <input type="text" class="search-input" id="gallerySearch" placeholder="Search gallery...">
+                </div>
+                <div class="gallery-grid-admin" id="adminGalleryGrid">
+                    <!-- Gallery items loaded from Firebase -->
+                </div>
+            </section>
+
+            <!-- ===== DONORS PAGE ===== -->
+            <section class="admin-page" id="page-donors">
+                <div class="admin-toolbar">
+                    <button class="toolbar-btn primary" onclick="openDonorModal()">
+                        <i class="fas fa-user-plus"></i> Add Donor
+                    </button>
+                    <input type="text" class="search-input" id="donorSearch" placeholder="Search donors...">
+                </div>
+                <div class="table-wrapper">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Photo</th>
+                                <th>Name</th>
+                                <th>Trees</th>
+                                <th>Link</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="donorTableBody">
+                            <!-- Donors loaded from Firebase -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- ===== REQUESTS PAGE ===== -->
+            <section class="admin-page" id="page-requests">
+                <div class="admin-toolbar">
+                    <button class="toolbar-btn success" onclick="refreshRequests()">
+                        <i class="fas fa-sync"></i> Refresh
+                    </button>
+                </div>
+                <div id="requestList">
+                    <!-- Requests loaded from Firebase -->
+                </div>
+            </section>
+
+            <!-- ===== SETTINGS PAGE ===== -->
+            <section class="admin-page" id="page-settings">
+                <div class="settings-grid">
+                    <div class="card">
+                        <h3>Site Settings</h3>
+                        <form id="settingsForm">
+                            <div class="form-group">
+                                <label>Site Title</label>
+                                <input type="text" id="siteTitle" value="ARK ARCHIVE">
+                            </div>
+                            <div class="form-group">
+                                <label>Tagline</label>
+                                <input type="text" id="siteTagline" value="Global Eternal Legacy">
+                            </div>
+                            <button type="submit" class="save-btn">Save Settings</button>
+                        </form>
+                    </div>
+                    <div class="card">
+                        <h3>Statistics</h3>
+                        <form id="statsForm">
+                            <div class="form-group">
+                                <label>Total Collected ($)</label>
+                                <input type="number" id="statsCollected">
+                            </div>
+                            <div class="form-group">
+                                <label>Trees Bought</label>
+                                <input type="number" id="statsBought">
+                            </div>
+                            <div class="form-group">
+                                <label>Handed Over</label>
+                                <input type="number" id="statsHanded">
+                            </div>
+                            <button type="submit" class="save-btn">Update Stats</button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- ===== UPLOAD MODAL ===== -->
+    <div class="modal" id="uploadModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Upload Image</h3>
+                <button class="modal-close" onclick="closeUploadModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="upload-area" id="uploadArea">
+                    <input type="file" id="imageFile" accept="image/*" multiple>
+                    <div class="upload-preview">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <p>Click or drag to select images</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Redirect Link (Optional)</label>
+                    <input type="url" id="imageLink" placeholder="https://example.com">
+                </div>
+                <div class="progress-bar" id="uploadProgress" style="display:none;">
+                    <div class="progress-fill" style="width:0%"></div>
+                </div>
+                <button class="upload-btn" onclick="uploadImages()">
+                    <i class="fas fa-upload"></i> Upload
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== DONOR MODAL ===== -->
+    <div class="modal" id="donorModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="donorModalTitle">Add Donor</h3>
+                <button class="modal-close" onclick="closeDonorModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="donorEditKey">
+                <div class="form-group">
+                    <label>Donor Name</label>
+                    <input type="text" id="donorNameInput" placeholder="Enter donor name">
+                </div>
+                <div class="form-group">
+                    <label>Number of Trees</label>
+                    <input type="number" id="donorTrees" placeholder="0">
+                </div>
+                <div class="form-group">
+                    <label>Photo URL</label>
+                    <input type="url" id="donorPhoto" placeholder="https://example.com/photo.jpg">
+                </div>
+                <div class="form-group">
+                    <label>Profile/Social Link</label>
+                    <input type="url" id="donorLink" placeholder="https://facebook.com/profile">
+                </div>
+                <button class="save-btn" onclick="saveDonor()">Save Donor</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== LOGIN OVERLAY ===== -->
+    <div class="login-overlay" id="loginOverlay">
+        <div class="login-box">
+            <h2>Admin Login</h2>
+            <p>Enter your credentials to access the admin panel</p>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" id="loginEmail" placeholder="admin@example.com" required>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="loginPassword" placeholder="Enter password" required>
+                </div>
+                <button type="submit" class="login-btn">Login</button>
+                <div id="loginMessage" class="login-message"></div>
+                <button type="button" class="forgot-btn" onclick="forgotPassword()">Forgot Password?</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/firebase-config.js"></script>
+    <script src="js/cloudinary.js"></script>
+    <script src="js/admin.js"></script>
+</body>
+</html>
