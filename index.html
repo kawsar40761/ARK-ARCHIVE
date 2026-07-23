@@ -3,31 +3,33 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ARK CREATOR · Sovereign Plots for Digital Royals</title>
+    <title>ARK Creator Estate | Premium Digital Plots</title>
 
-    <!-- Google Fonts & Font Awesome -->
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=Playfair+Display:wght@400;700;900&display=swap" rel="stylesheet" />
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
     <style>
-        /* ============================================================
-               ROOT & RESET
-               ============================================================ */
+        /* ===== ROOT VARIABLES ===== */
         :root {
-            --primary: #00BFFF;
-            --accent: #FF1493;
-            --gold: #FCD535;
-            --dark: #0a0a0a;
-            --dark-card: #141414;
-            --light: #f8f8f8;
-            --text: #ffffff;
-            --text-muted: #aaaaaa;
-            --border: #2a2a2a;
+            --gold: #D4AF37;
+            --gold-light: #F5D76E;
+            --gold-dark: #B8860B;
+            --black: #0A0A0A;
+            --black-light: #1A1A1A;
+            --white: #FFFFFF;
+            --gray: #888888;
+            --dark-gray: #2A2A2A;
+            --glow: rgba(212, 175, 55, 0.3);
             --shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-            --radius: 24px;
-            --transition: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            --radius: 20px;
+            --transition: 0.4s cubic-bezier(0.19, 1, 0.22, 1);
         }
 
+        /* ===== RESET & BASE ===== */
         * {
             margin: 0;
             padding: 0;
@@ -40,52 +42,85 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background: var(--dark);
-            color: var(--text);
+            background: var(--black);
+            color: var(--white);
             overflow-x: hidden;
+            min-height: 100vh;
         }
 
+        /* ===== SCROLLBAR ===== */
         ::-webkit-scrollbar {
             width: 6px;
         }
         ::-webkit-scrollbar-track {
-            background: var(--dark);
+            background: var(--black-light);
         }
         ::-webkit-scrollbar-thumb {
-            background: var(--primary);
+            background: var(--gold);
             border-radius: 10px;
         }
 
-        a {
-            text-decoration: none;
-            color: inherit;
-        }
-        button {
-            cursor: pointer;
-            border: none;
-            outline: none;
-            font-family: inherit;
-        }
-
-        /* ============================================================
-               NAVIGATION
-               ============================================================ */
-        .nav {
+        /* ===== LOADER ===== */
+        #loader {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            padding: 20px 40px;
+            height: 100vh;
+            background: var(--black);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 99999;
+            transition: opacity 0.8s ease;
+        }
+        #loader .loader-icon {
+            font-size: 64px;
+            color: var(--gold);
+            animation: pulse 1.5s infinite;
+        }
+        #loader p {
+            margin-top: 20px;
+            letter-spacing: 6px;
+            font-size: 11px;
+            color: var(--gold);
+            text-transform: uppercase;
+        }
+        @keyframes pulse {
+            0%,
+            100% {
+                transform: scale(0.9);
+                opacity: 0.5;
+            }
+            50% {
+                transform: scale(1.1);
+                opacity: 1;
+            }
+        }
+        .loader-hide {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* ===== TOP BAR ===== */
+        .top-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 18px 40px;
             display: flex;
             align-items: center;
             justify-content: space-between;
+            z-index: 1000;
             background: rgba(10, 10, 10, 0.85);
             backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--border);
-            z-index: 10000;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.15);
+            flex-wrap: wrap;
+            gap: 15px;
         }
-
-        .nav-brand {
+        .top-bar .brand {
             display: flex;
             align-items: center;
             gap: 12px;
@@ -94,784 +129,869 @@
             font-size: 22px;
             letter-spacing: 2px;
         }
-        .nav-brand i {
+        .top-bar .brand i {
             color: var(--gold);
-            font-size: 26px;
+            font-size: 28px;
         }
-        .nav-brand span {
-            color: var(--text-muted);
-            font-weight: 400;
-            font-size: 12px;
-            letter-spacing: 4px;
-            margin-left: 6px;
+        .top-bar .brand span {
+            color: var(--gold);
         }
-
-        .nav-actions {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .btn-claim {
+        .top-bar .cta-btn {
+            background: var(--gold);
+            color: var(--black);
+            border: none;
             padding: 10px 28px;
-            background: var(--primary);
-            color: #000;
+            border-radius: 50px;
             font-weight: 700;
             font-size: 13px;
-            border-radius: 50px;
             letter-spacing: 1px;
+            cursor: pointer;
             transition: var(--transition);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
         }
-        .btn-claim:hover {
-            background: var(--gold);
-            transform: scale(1.04);
+        .top-bar .cta-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px var(--glow);
         }
-
-        .btn-admin {
-            padding: 8px 18px;
-            background: transparent;
-            border: 1px solid var(--border);
-            color: var(--text-muted);
+        .top-bar .fomo-tag {
+            background: rgba(212, 175, 55, 0.12);
+            padding: 6px 16px;
             border-radius: 50px;
-            font-size: 12px;
+            border: 1px solid var(--gold);
+            font-size: 11px;
             font-weight: 600;
-            transition: var(--transition);
+            color: var(--gold-light);
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
-        .btn-admin:hover {
-            border-color: var(--primary);
-            color: var(--text);
+        .top-bar .fomo-tag i {
+            animation: blink 1s infinite;
+        }
+        @keyframes blink {
+            0%,
+            100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.2;
+            }
         }
 
         @media (max-width: 768px) {
-            .nav {
+            .top-bar {
                 padding: 14px 20px;
-                flex-wrap: wrap;
+                flex-direction: column;
+                align-items: center;
                 gap: 10px;
             }
-            .nav-brand {
+            .top-bar .brand {
                 font-size: 18px;
             }
-            .nav-brand span {
-                display: none;
-            }
-            .btn-claim {
-                padding: 8px 18px;
-                font-size: 11px;
-            }
-            .btn-admin {
-                padding: 6px 14px;
+            .top-bar .fomo-tag {
                 font-size: 10px;
+                padding: 4px 12px;
+            }
+            .top-bar .cta-btn {
+                padding: 8px 20px;
+                font-size: 12px;
+                width: 100%;
+                justify-content: center;
             }
         }
 
-        /* ============================================================
-               HERO
-               ============================================================ */
+        /* ===== HERO SECTION ===== */
         .hero {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
+            margin-top: 100px;
+            padding: 80px 40px 40px;
             text-align: center;
-            padding: 120px 20px 80px;
-            background: radial-gradient(ellipse at 30% 30%, #1a1a2e 0%, #0a0a0a 70%);
-            position: relative;
-            overflow: hidden;
+            background: linear-gradient(180deg, var(--black) 0%, var(--black-light) 100%);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.1);
         }
-
-        .hero::after {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -20%;
-            width: 600px;
-            height: 600px;
-            background: radial-gradient(circle, rgba(0, 191, 255, 0.08), transparent 70%);
-            border-radius: 50%;
-            pointer-events: none;
-        }
-
-        .hero-badge {
-            display: inline-block;
-            padding: 6px 20px;
-            border: 1px solid var(--gold);
-            border-radius: 50px;
-            font-size: 10px;
-            letter-spacing: 4px;
-            text-transform: uppercase;
-            color: var(--gold);
-            margin-bottom: 20px;
-            background: rgba(252, 213, 53, 0.06);
-        }
-
         .hero h1 {
             font-family: 'Playfair Display', serif;
+            font-size: clamp(36px, 7vw, 72px);
             font-weight: 900;
-            font-size: clamp(40px, 8vw, 80px);
             line-height: 1.1;
-            margin-bottom: 16px;
+            letter-spacing: 2px;
         }
         .hero h1 .highlight {
             color: var(--gold);
+            position: relative;
+        }
+        .hero h1 .highlight::after {
+            content: '';
+            position: absolute;
+            bottom: 4px;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--gold);
+            border-radius: 10px;
         }
         .hero p {
-            max-width: 600px;
-            font-size: 16px;
-            color: var(--text-muted);
-            line-height: 1.8;
-            margin-bottom: 30px;
+            max-width: 700px;
+            margin: 24px auto 32px;
+            font-size: 18px;
+            color: var(--gray);
+            line-height: 1.7;
+            font-weight: 300;
         }
-
-        .hero-stats {
+        .hero .stats-row {
             display: flex;
-            gap: 40px;
-            margin-top: 20px;
+            justify-content: center;
+            gap: 50px;
+            flex-wrap: wrap;
+            margin-top: 30px;
         }
-        .hero-stats div {
+        .hero .stats-row .stat-item {
             text-align: center;
         }
-        .hero-stats .num {
-            font-size: 28px;
-            font-weight: 700;
-            color: var(--text);
+        .hero .stats-row .stat-item .num {
+            font-size: 32px;
+            font-weight: 900;
+            color: var(--gold);
+            display: block;
         }
-        .hero-stats .label {
-            font-size: 11px;
-            color: var(--text-muted);
-            letter-spacing: 2px;
+        .hero .stats-row .stat-item .label {
+            font-size: 12px;
             text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--gray);
+            margin-top: 4px;
         }
 
-        @media (max-width: 600px) {
-            .hero h1 {
-                font-size: 32px;
+        @media (max-width: 768px) {
+            .hero {
+                padding: 60px 20px 30px;
             }
-            .hero-stats {
-                gap: 20px;
-                flex-wrap: wrap;
-                justify-content: center;
+            .hero p {
+                font-size: 15px;
             }
-            .hero-stats .num {
-                font-size: 22px;
+            .hero .stats-row {
+                gap: 25px;
+            }
+            .hero .stats-row .stat-item .num {
+                font-size: 24px;
             }
         }
 
-        /* ============================================================
-               PLOT GRID (INFINITE CIRCLE)
-               ============================================================ */
-        .plots-section {
-            padding: 60px 20px 100px;
+        /* ===== PLOT GRID ===== */
+        .plot-section {
+            padding: 60px 40px 80px;
             max-width: 1400px;
             margin: 0 auto;
         }
-
-        .section-header {
+        .plot-section .section-header {
             display: flex;
-            align-items: flex-end;
             justify-content: space-between;
+            align-items: center;
             flex-wrap: wrap;
-            gap: 20px;
             margin-bottom: 40px;
-            border-bottom: 1px solid var(--border);
-            padding-bottom: 20px;
         }
-
-        .section-header h2 {
+        .plot-section .section-header h2 {
             font-family: 'Playfair Display', serif;
-            font-weight: 700;
             font-size: 32px;
+            font-weight: 700;
         }
-        .section-header h2 small {
-            display: block;
-            font-family: 'Inter', sans-serif;
-            font-weight: 400;
-            font-size: 14px;
-            color: var(--text-muted);
-            letter-spacing: 2px;
-            margin-top: 4px;
+        .plot-section .section-header h2 i {
+            color: var(--gold);
+            margin-right: 10px;
         }
-
-        .section-header .price-info {
-            font-size: 13px;
-            color: var(--text-muted);
-            background: rgba(255, 255, 255, 0.04);
-            padding: 8px 18px;
+        .plot-section .section-header .remaining {
+            background: rgba(212, 175, 55, 0.08);
+            padding: 8px 20px;
             border-radius: 50px;
-            border: 1px solid var(--border);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            font-size: 14px;
+            font-weight: 600;
+        }
+        .plot-section .section-header .remaining span {
+            color: var(--gold);
+            font-size: 20px;
         }
 
-        /* Infinite Grid */
+        /* প্লট গ্রিড */
         .plot-grid {
             display: grid;
-            grid-template-columns: repeat(5, 1fr);
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
             gap: 24px;
-            margin-top: 10px;
         }
 
-        @media (max-width: 1200px) {
-            .plot-grid {
-                grid-template-columns: repeat(4, 1fr);
-            }
-        }
-        @media (max-width: 992px) {
-            .plot-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
-        }
-        @media (max-width: 600px) {
-            .plot-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 16px;
-            }
-        }
-        @media (max-width: 400px) {
-            .plot-grid {
-                grid-template-columns: 1fr 1fr;
-                gap: 12px;
-            }
-        }
-
-        /* Single Plot Card (Circle) */
+        /* প্লট কার্ড */
         .plot-card {
-            aspect-ratio: 1 / 1;
-            border-radius: 50%;
-            background: var(--dark-card);
-            border: 2px solid var(--border);
+            background: var(--black-light);
+            border-radius: var(--radius);
+            padding: 20px 16px 18px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            transition: var(--transition);
+            position: relative;
+            cursor: pointer;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 20px;
-            transition: var(--transition);
-            position: relative;
-            overflow: hidden;
-            cursor: pointer;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            gap: 10px;
+            min-height: 220px;
         }
-
         .plot-card:hover {
-            transform: scale(1.04);
-            border-color: var(--primary);
-            box-shadow: 0 0 40px rgba(0, 191, 255, 0.15);
-        }
-
-        .plot-card.occupied {
+            transform: translateY(-6px);
             border-color: var(--gold);
+            box-shadow: 0 12px 40px rgba(212, 175, 55, 0.12);
         }
-        .plot-card.occupied:hover {
-            border-color: var(--gold);
-            box-shadow: 0 0 40px rgba(252, 213, 53, 0.15);
-        }
-
         .plot-card .plot-number {
-            position: absolute;
-            top: 12px;
-            left: 12px;
-            font-size: 10px;
+            font-size: 11px;
             font-weight: 700;
-            color: var(--text-muted);
-            background: rgba(0, 0, 0, 0.5);
-            padding: 2px 10px;
-            border-radius: 20px;
-            letter-spacing: 1px;
-        }
-
-        .plot-card .plot-price {
+            color: var(--gray);
+            letter-spacing: 2px;
             position: absolute;
-            bottom: 12px;
-            right: 12px;
-            font-size: 10px;
-            font-weight: 700;
-            color: var(--gold);
-            background: rgba(0, 0, 0, 0.5);
-            padding: 2px 10px;
+            top: 14px;
+            right: 16px;
+            background: rgba(255, 255, 255, 0.04);
+            padding: 2px 12px;
             border-radius: 20px;
         }
-
-        .plot-card .avatar {
-            width: 70%;
-            aspect-ratio: 1/1;
+        .plot-card .avatar-circle {
+            width: 100px;
+            height: 100px;
             border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid var(--border);
-            background: #1a1a1a;
-            transition: var(--transition);
-            margin-bottom: 8px;
-        }
-
-        .plot-card .avatar-placeholder {
-            width: 70%;
-            aspect-ratio: 1/1;
-            border-radius: 50%;
-            background: #1a1a1a;
-            border: 2px dashed var(--border);
+            background: var(--dark-gray);
+            border: 3px solid rgba(212, 175, 55, 0.2);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 28px;
-            color: var(--text-muted);
-            margin-bottom: 8px;
-        }
-
-        .plot-card .creator-name {
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--text);
-            line-height: 1.3;
-            max-width: 90%;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .plot-card .social-link {
-            font-size: 16px;
-            color: var(--primary);
-            margin-top: 4px;
+            font-size: 40px;
+            color: var(--gray);
             transition: var(--transition);
+            overflow: hidden;
+            flex-shrink: 0;
+            position: relative;
         }
-        .plot-card .social-link:hover {
+        .plot-card .avatar-circle img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .plot-card .avatar-circle .placeholder-icon {
+            opacity: 0.3;
+            font-size: 36px;
+        }
+        .plot-card .plot-name {
+            font-weight: 700;
+            font-size: 15px;
+            color: var(--white);
+            line-height: 1.3;
+        }
+        .plot-card .plot-social {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .plot-card .plot-social a {
+            color: var(--gray);
+            font-size: 14px;
+            transition: var(--transition);
+            text-decoration: none;
+        }
+        .plot-card .plot-social a:hover {
             color: var(--gold);
         }
-
-        .plot-card .empty-label {
+        .plot-card .plot-price {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--gold);
+            margin-top: 4px;
+        }
+        .plot-card .plot-price small {
+            font-weight: 400;
+            color: var(--gray);
+            font-size: 11px;
+        }
+        .plot-card .plot-status {
             font-size: 10px;
-            color: var(--text-muted);
-            letter-spacing: 1px;
             text-transform: uppercase;
-            opacity: 0.5;
+            letter-spacing: 1px;
+            padding: 3px 14px;
+            border-radius: 20px;
+            font-weight: 600;
+            margin-top: 4px;
+        }
+        .plot-card .plot-status.available {
+            background: rgba(212, 175, 55, 0.12);
+            color: var(--gold-light);
+        }
+        .plot-card .plot-status.sold {
+            background: rgba(255, 255, 255, 0.06);
+            color: var(--gray);
         }
 
-        /* ============================================================
-               REQUEST MODAL (Popup)
-               ============================================================ */
+        /* খালি প্লটে গ্লো ইফেক্ট (FOMO) */
+        .plot-card.empty-card {
+            border-style: dashed;
+            border-color: rgba(212, 175, 55, 0.15);
+        }
+        .plot-card.empty-card .avatar-circle {
+            border-color: rgba(212, 175, 55, 0.08);
+        }
+        .plot-card.empty-card:hover {
+            border-color: var(--gold);
+            box-shadow: 0 0 40px var(--glow);
+        }
+        .plot-card.empty-card .claim-text {
+            font-size: 12px;
+            color: var(--gray);
+            margin-top: 4px;
+        }
+        .plot-card.empty-card .claim-btn {
+            background: var(--gold);
+            color: var(--black);
+            border: none;
+            padding: 6px 20px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 12px;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 4px;
+        }
+        .plot-card.empty-card .claim-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px var(--glow);
+        }
+
+        /* ডায়নামিক প্রাইস ট্যাগ */
+        .price-tag {
+            display: inline-block;
+            background: rgba(212, 175, 55, 0.1);
+            padding: 2px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--gold);
+            border: 1px solid rgba(212, 175, 55, 0.15);
+        }
+
+        /* লোড মোর বাটন */
+        .load-more-wrap {
+            text-align: center;
+            margin-top: 50px;
+        }
+        .load-more-wrap button {
+            background: transparent;
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            padding: 14px 50px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 14px;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .load-more-wrap button:hover {
+            background: var(--gold);
+            color: var(--black);
+            box-shadow: 0 0 40px var(--glow);
+        }
+
+        @media (max-width: 768px) {
+            .plot-section {
+                padding: 40px 16px 60px;
+            }
+            .plot-grid {
+                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+                gap: 16px;
+            }
+            .plot-card .avatar-circle {
+                width: 80px;
+                height: 80px;
+            }
+            .plot-card .plot-name {
+                font-size: 13px;
+            }
+            .plot-section .section-header h2 {
+                font-size: 24px;
+            }
+        }
+        @media (max-width: 480px) {
+            .plot-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+            }
+            .plot-card {
+                padding: 14px 10px;
+                min-height: 180px;
+            }
+            .plot-card .avatar-circle {
+                width: 64px;
+                height: 64px;
+            }
+            .plot-card .avatar-circle .placeholder-icon {
+                font-size: 24px;
+            }
+            .plot-card .plot-number {
+                font-size: 9px;
+                top: 8px;
+                right: 10px;
+            }
+            .plot-card .plot-price {
+                font-size: 12px;
+            }
+            .plot-card .claim-btn {
+                font-size: 10px;
+                padding: 4px 14px;
+            }
+        }
+
+        /* ===== REQUEST FORM (POPUP) ===== */
         .modal-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(0, 0, 0, 0.85);
             backdrop-filter: blur(8px);
-            z-index: 99999;
+            z-index: 9999;
             display: none;
             align-items: center;
             justify-content: center;
             padding: 20px;
         }
-        .modal-overlay.active {
+        .modal-overlay.open {
             display: flex;
         }
-
         .modal-box {
+            background: var(--black-light);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: var(--radius);
             max-width: 520px;
             width: 100%;
-            background: var(--dark-card);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 40px 35px;
-            box-shadow: var(--shadow);
-            animation: modalIn 0.3s ease;
-            max-height: 90vh;
-            overflow-y: auto;
+            padding: 40px 36px;
+            position: relative;
+            animation: modalIn 0.4s ease;
         }
-
         @keyframes modalIn {
             from {
                 opacity: 0;
-                transform: scale(0.95) translateY(20px);
+                transform: scale(0.95) translateY(30px);
             }
             to {
                 opacity: 1;
                 transform: scale(1) translateY(0);
             }
         }
-
-        .modal-box .modal-close {
-            float: right;
+        .modal-box .close-modal {
+            position: absolute;
+            top: 16px;
+            right: 20px;
             background: none;
-            color: var(--text-muted);
+            border: none;
+            color: var(--gray);
             font-size: 24px;
+            cursor: pointer;
             transition: var(--transition);
         }
-        .modal-box .modal-close:hover {
-            color: var(--text);
+        .modal-box .close-modal:hover {
+            color: var(--white);
+            transform: rotate(90deg);
         }
-
         .modal-box h2 {
             font-family: 'Playfair Display', serif;
             font-size: 26px;
             margin-bottom: 6px;
-            margin-top: 10px;
+        }
+        .modal-box h2 i {
+            color: var(--gold);
+            margin-right: 10px;
         }
         .modal-box .sub {
-            color: var(--text-muted);
+            color: var(--gray);
             font-size: 14px;
-            margin-bottom: 25px;
+            margin-bottom: 24px;
         }
-
-        .form-group {
+        .modal-box .form-group {
             margin-bottom: 18px;
         }
-        .form-group label {
+        .modal-box .form-group label {
             display: block;
             font-size: 12px;
             font-weight: 600;
-            color: var(--text-muted);
-            margin-bottom: 5px;
-            letter-spacing: 1px;
             text-transform: uppercase;
-        }
-        .form-group input {
-            width: 100%;
-            padding: 12px 16px;
-            background: #1a1a1a;
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            color: var(--text);
-            font-size: 14px;
-            transition: var(--transition);
-        }
-        .form-group input:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(0, 191, 255, 0.1);
-        }
-        .form-group input::placeholder {
-            color: #555;
-        }
-
-        .btn-submit {
-            width: 100%;
-            padding: 14px;
-            background: var(--primary);
-            color: #000;
-            font-weight: 700;
-            font-size: 16px;
-            border-radius: 10px;
-            transition: var(--transition);
-            margin-top: 6px;
-        }
-        .btn-submit:hover {
-            background: var(--gold);
-            transform: translateY(-2px);
-        }
-
-        /* ============================================================
-               CONGRATS / PAYMENT POPUP (after request)
-               ============================================================ */
-        .popup-payment {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(0.9);
-            max-width: 480px;
-            width: 90%;
-            background: var(--dark-card);
-            border: 1px solid var(--gold);
-            border-radius: var(--radius);
-            padding: 40px 35px;
-            z-index: 100000;
-            box-shadow: 0 0 80px rgba(252, 213, 53, 0.15);
-            display: none;
-            transition: 0.3s ease;
-        }
-        .popup-payment.active {
-            display: block;
-            transform: translate(-50%, -50%) scale(1);
-        }
-
-        .popup-payment .popup-icon {
-            font-size: 48px;
-            color: var(--gold);
-            text-align: center;
-            margin-bottom: 10px;
-        }
-        .popup-payment h2 {
-            font-family: 'Playfair Display', serif;
-            font-size: 26px;
-            text-align: center;
+            letter-spacing: 1px;
+            color: var(--gray);
             margin-bottom: 6px;
         }
-        .popup-payment .popup-sub {
-            text-align: center;
-            color: var(--text-muted);
+        .modal-box .form-group input,
+        .modal-box .form-group select {
+            width: 100%;
+            padding: 12px 16px;
+            background: var(--black);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 10px;
+            color: var(--white);
             font-size: 14px;
-            margin-bottom: 20px;
+            transition: var(--transition);
         }
-        .popup-payment .payment-details {
-            background: #1a1a1a;
-            border-radius: 12px;
-            padding: 18px 20px;
-            margin-bottom: 20px;
-            border-left: 3px solid var(--gold);
+        .modal-box .form-group input:focus,
+        .modal-box .form-group select:focus {
+            border-color: var(--gold);
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+            outline: none;
         }
-        .popup-payment .payment-details p {
-            font-size: 13px;
-            line-height: 1.8;
-            color: var(--text-muted);
+        .modal-box .form-group input::placeholder {
+            color: #555;
         }
-        .popup-payment .payment-details strong {
-            color: var(--text);
+        .modal-box .form-group select option {
+            background: var(--black);
+        }
+        .modal-box .submit-btn {
+            width: 100%;
+            padding: 14px;
+            background: var(--gold);
+            color: var(--black);
+            border: none;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .modal-box .submit-btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 30px var(--glow);
+        }
+        .modal-box .submit-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
         }
 
-        .popup-payment .whatsapp-info {
-            background: rgba(0, 191, 255, 0.06);
+        @media (max-width: 480px) {
+            .modal-box {
+                padding: 30px 20px;
+            }
+            .modal-box h2 {
+                font-size: 20px;
+            }
+        }
+
+        /* ===== CONGRATS POPUP ===== */
+        .congrats-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(12px);
+            z-index: 10000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .congrats-overlay.open {
+            display: flex;
+        }
+        .congrats-box {
+            background: var(--black-light);
+            border: 2px solid var(--gold);
+            border-radius: var(--radius);
+            max-width: 560px;
+            width: 100%;
+            padding: 44px 40px;
+            text-align: center;
+            animation: modalIn 0.5s ease;
+            position: relative;
+            box-shadow: 0 0 80px rgba(212, 175, 55, 0.15);
+        }
+        .congrats-box .icon {
+            font-size: 64px;
+            color: var(--gold);
+            margin-bottom: 10px;
+        }
+        .congrats-box h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 30px;
+        }
+        .congrats-box h2 span {
+            color: var(--gold);
+        }
+        .congrats-box .message {
+            color: var(--gray);
+            font-size: 15px;
+            line-height: 1.7;
+            margin: 16px 0 24px;
+        }
+        .congrats-box .payment-info {
+            background: rgba(255, 255, 255, 0.03);
             border-radius: 12px;
-            padding: 16px 20px;
+            padding: 20px;
+            text-align: left;
+            border: 1px solid rgba(255, 255, 255, 0.04);
             margin-bottom: 20px;
-            border: 1px solid var(--border);
         }
-        .popup-payment .whatsapp-info h4 {
+        .congrats-box .payment-info h4 {
+            color: var(--gold);
             font-size: 13px;
-            color: var(--primary);
-            margin-bottom: 8px;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
         }
-        .popup-payment .whatsapp-info ul {
+        .congrats-box .payment-info ul {
             list-style: none;
             padding: 0;
-            font-size: 13px;
-            color: var(--text-muted);
+            font-size: 14px;
             line-height: 2;
+            color: var(--gray);
         }
-        .popup-payment .whatsapp-info ul li::before {
-            content: '✓ ';
+        .congrats-box .payment-info ul li i {
+            color: var(--gold);
+            margin-right: 10px;
+            width: 18px;
+        }
+        .congrats-box .close-congrats {
+            background: var(--gold);
+            color: var(--black);
+            border: none;
+            padding: 12px 40px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .congrats-box .close-congrats:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px var(--glow);
+        }
+
+        @media (max-width: 480px) {
+            .congrats-box {
+                padding: 30px 20px;
+            }
+            .congrats-box h2 {
+                font-size: 22px;
+            }
+            .congrats-box .payment-info ul {
+                font-size: 12px;
+            }
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            padding: 60px 40px 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+            text-align: center;
+            color: var(--gray);
+            font-size: 13px;
+            letter-spacing: 1px;
+        }
+        .footer .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        .footer .social-links a {
+            color: var(--gray);
+            font-size: 18px;
+            transition: var(--transition);
+            text-decoration: none;
+        }
+        .footer .social-links a:hover {
+            color: var(--gold);
+        }
+        .footer .brand-footer {
+            font-family: 'Playfair Display', serif;
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+        .footer .brand-footer span {
             color: var(--gold);
         }
 
-        .popup-payment .btn-close-popup {
-            width: 100%;
-            padding: 12px;
-            background: var(--gold);
-            color: #000;
-            font-weight: 700;
-            border-radius: 10px;
-            transition: var(--transition);
-        }
-        .popup-payment .btn-close-popup:hover {
-            background: #e6c035;
-        }
-
-        /* ============================================================
-               FOOTER
-               ============================================================ */
-        .footer {
-            border-top: 1px solid var(--border);
-            padding: 40px 20px 30px;
-            text-align: center;
-            color: var(--text-muted);
-            font-size: 12px;
-            letter-spacing: 1px;
-        }
-        .footer a {
-            color: var(--primary);
-        }
-
-        /* ============================================================
-               RESPONSIVE TWEAKS
-               ============================================================ */
-        @media (max-width: 600px) {
-            .modal-box {
-                padding: 28px 20px;
-            }
-            .popup-payment {
-                padding: 28px 20px;
-            }
-            .plot-card .plot-number {
-                font-size: 8px;
-                top: 6px;
-                left: 6px;
-                padding: 2px 8px;
-            }
-            .plot-card .plot-price {
-                font-size: 8px;
-                bottom: 6px;
-                right: 6px;
-                padding: 2px 8px;
-            }
-            .plot-card .creator-name {
-                font-size: 10px;
-            }
-            .section-header h2 {
-                font-size: 24px;
+        @media (max-width: 768px) {
+            .footer {
+                padding: 40px 20px 20px;
             }
         }
     </style>
 </head>
 <body>
 
-    <!-- ============================================================
-    NAVIGATION
-    ============================================================ -->
-    <nav class="nav">
-        <div class="nav-brand">
-            <i class="fas fa-crown"></i>
-            ARK CREATOR
-            <span>· SOVEREIGN PLOTS</span>
-        </div>
-        <div class="nav-actions">
-            <button class="btn-claim" id="openRequestBtn">
-                <i class="fas fa-pen-fancy"></i> Claim Plot
-            </button>
-            <a href="login.html" class="btn-admin">
-                <i class="fas fa-shield-alt"></i> Admin
-            </a>
-        </div>
-    </nav>
+    <!-- ===== LOADER ===== -->
+    <div id="loader">
+        <div class="loader-icon"><i class="fas fa-crown"></i></div>
+        <p>Loading Sovereign Estate...</p>
+    </div>
 
-    <!-- ============================================================
-    HERO
-    ============================================================ -->
+    <!-- ===== TOP BAR ===== -->
+    <header class="top-bar">
+        <div class="brand">
+            <i class="fas fa-crown"></i>
+            ARK<span>Creator</span>
+        </div>
+
+        <div class="fomo-tag">
+            <i class="fas fa-circle" style="color: #00ff88;"></i>
+            <span id="fomoText">Only <strong id="remainingCount">12</strong> plots remaining!</span>
+        </div>
+
+        <button class="cta-btn" id="scrollToPlots">
+            <i class="fas fa-rocket"></i> Claim Your Plot
+        </button>
+    </header>
+
+    <!-- ===== HERO ===== -->
     <section class="hero">
-        <div class="hero-badge">✦ Limited Digital Estates</div>
         <h1>
-            Reserve Your<br />
-            <span class="highlight">Creator Circle</span>
+            Your Digital Throne<br />
+            <span class="highlight">Awaits You</span>
         </h1>
         <p>
-            Claim a permanent circular plot in our sovereign archive.
-            Showcase your identity, social links, and legacy — forever.
+            Secure your premium circular plot — a permanent digital estate for
+            creators, gamers, and visionaries. Showcase your identity, link your
+            social empire, and become part of an elite legacy.
         </p>
-        <div class="hero-stats">
-            <div>
-                <div class="num" id="totalPlotsDisplay">0</div>
-                <div class="label">Total Plots</div>
+        <div class="stats-row">
+            <div class="stat-item">
+                <span class="num" id="totalPlots">0</span>
+                <span class="label">Total Plots</span>
             </div>
-            <div>
-                <div class="num" id="occupiedPlotsDisplay">0</div>
-                <div class="label">Occupied</div>
+            <div class="stat-item">
+                <span class="num" id="claimedPlots">0</span>
+                <span class="label">Claimed</span>
             </div>
-            <div>
-                <div class="num" id="availablePlotsDisplay">0</div>
-                <div class="label">Available</div>
+            <div class="stat-item">
+                <span class="num" id="availablePlots">0</span>
+                <span class="label">Available</span>
             </div>
         </div>
-        <button class="btn-claim" style="margin-top:30px; padding:14px 48px; font-size:15px;" id="heroClaimBtn">
-            <i class="fas fa-rocket"></i> Claim Your Plot Now
-        </button>
     </section>
 
-    <!-- ============================================================
-    PLOT GRID (INFINITE)
-    ============================================================ -->
-    <section class="plots-section" id="plotsSection">
+    <!-- ===== PLOT GRID ===== -->
+    <section class="plot-section" id="plotSection">
         <div class="section-header">
-            <div>
-                <h2>
-                    The Circle Grid
-                    <small>Each plot is a unique digital estate · prices vary by zone</small>
-                </h2>
-            </div>
-            <div class="price-info">
-                <i class="fas fa-coins"></i> Prices from <strong id="minPriceDisplay">$0</strong> to <strong id="maxPriceDisplay">$0</strong>
+            <h2><i class="fas fa-th-large"></i> Premium Plots</h2>
+            <div class="remaining">
+                🔥 <span id="remainingCount2">12</span> spots left
             </div>
         </div>
 
         <div class="plot-grid" id="plotGrid">
-            <!-- JavaScript will render plots here -->
+            <!-- ডায়নামিকভাবে জাভাস্ক্রিপ্ট দিয়ে তৈরি হবে -->
         </div>
 
-        <!-- Infinite loader (hidden) -->
-        <div style="text-align:center; padding:40px 0; color:var(--text-muted); font-size:13px;" id="loadingMore">
-            <i class="fas fa-spinner fa-spin"></i> Loading more plots...
+        <div class="load-more-wrap">
+            <button id="loadMoreBtn">Load More Plots <i class="fas fa-arrow-down"></i></button>
         </div>
     </section>
 
-    <!-- ============================================================
-    REQUEST MODAL
-    ============================================================ -->
+    <!-- ===== REQUEST MODAL ===== -->
     <div class="modal-overlay" id="requestModal">
         <div class="modal-box">
-            <button class="modal-close" id="closeModalBtn">&times;</button>
-            <h2>📋 Claim a Plot</h2>
-            <p class="sub">Fill in your details to request a sovereign circle.</p>
+            <button class="close-modal" id="closeModalBtn">&times;</button>
+            <h2><i class="fas fa-hand-holding-heart"></i> Claim This Plot</h2>
+            <p class="sub">Fill in your details to secure your digital estate.</p>
 
-            <form id="requestForm">
-                <input type="hidden" id="selectedPlotNumber" value="" />
-
+            <form id="claimForm">
                 <div class="form-group">
-                    <label>Your Full Name</label>
-                    <input type="text" id="reqName" placeholder="e.g. Alex Rivera" required />
+                    <label>Full Name</label>
+                    <input type="text" id="claimName" placeholder="e.g. Alex Rivera" required />
                 </div>
                 <div class="form-group">
                     <label>Email Address</label>
-                    <input type="email" id="reqEmail" placeholder="alex@creator.com" required />
+                    <input type="email" id="claimEmail" placeholder="alex@example.com" required />
                 </div>
                 <div class="form-group">
-                    <label>WhatsApp Number (with country code)</label>
-                    <input type="tel" id="reqWhatsApp" placeholder="+880 1576 940717" required />
+                    <label>WhatsApp Number</label>
+                    <input type="text" id="claimWhatsapp" placeholder="+8801576940717" required />
                 </div>
                 <div class="form-group">
-                    <label>Preferred Plot Number (optional)</label>
-                    <input type="number" id="reqPlotNumber" placeholder="e.g. 7" min="1" />
+                    <label>Select Plot</label>
+                    <select id="claimPlotSelect" required>
+                        <option value="">— Choose a plot —</option>
+                    </select>
+                </div>
+                <div class="form-group" style="margin-bottom: 6px;">
+                    <label>Price (USD)</label>
+                    <input type="text" id="claimPrice" readonly style="background: rgba(212,175,55,0.06); color: var(--gold); font-weight: 700;" />
                 </div>
 
-                <button type="submit" class="btn-submit">
+                <button type="submit" class="submit-btn" id="claimSubmitBtn">
                     <i class="fas fa-paper-plane"></i> Submit Request
                 </button>
             </form>
-
-            <p style="margin-top:16px; font-size:12px; color:var(--text-muted); text-align:center;">
-                <i class="fas fa-lock"></i> Your info is secure. We'll contact you via WhatsApp.
-            </p>
         </div>
     </div>
 
-    <!-- ============================================================
-    CONGRATS + PAYMENT POPUP
-    ============================================================ -->
-    <div class="popup-payment" id="paymentPopup">
-        <div class="popup-icon"><i class="fas fa-crown"></i></div>
-        <h2 id="popupTitle">🎉 Congratulations, Alex!</h2>
-        <p class="popup-sub" id="popupSub">You've successfully requested Plot #7</p>
-
-        <div class="payment-details">
-            <p>
-                <strong>Next Steps:</strong><br />
-                1. Send the payment using one of the options below.<br />
-                2. After payment, forward the following to our WhatsApp support:
+    <!-- ===== CONGRATS POPUP ===== -->
+    <div class="congrats-overlay" id="congratsPopup">
+        <div class="congrats-box">
+            <div class="icon"><i class="fas fa-crown"></i></div>
+            <h2>🎉 Congratulations, <span id="congratsName">Creator</span>!</h2>
+            <p class="message">
+                Your request for <strong id="congratsPlot">Plot #0</strong> has been
+                received. You are now one step closer to your digital throne.
             </p>
-        </div>
 
-        <div class="whatsapp-info">
-            <h4><i class="fab fa-whatsapp"></i> WhatsApp Support</h4>
-            <ul>
-                <li>Transaction ID / Payment proof (screenshot)</li>
-                <li>Your profile photo (square, high quality)</li>
-                <li>Social media / website link (to be shown on your plot)</li>
-                <li>Your preferred display name (as you want it to appear)</li>
-            </ul>
-        </div>
+            <div class="payment-info">
+                <h4><i class="fas fa-info-circle"></i> Next Steps</h4>
+                <ul>
+                    <li><i class="fas fa-credit-card"></i> Send payment to the address below</li>
+                    <li><i class="fab fa-whatsapp"></i> After payment, contact <strong>Support</strong> on WhatsApp</li>
+                    <li><i class="fas fa-image"></i> Provide: <strong>Transaction ID, Payment Proof, Your Photo</strong></li>
+                    <li><i class="fas fa-link"></i> Also send your <strong>Social Media Link</strong> to attach</li>
+                </ul>
+                <div style="margin-top: 12px; background: rgba(212,175,55,0.08); padding: 12px; border-radius: 8px; border-left: 3px solid var(--gold);">
+                    <span style="color: var(--gold); font-weight: 700;">Payment Address:</span>
+                    <span style="font-family: monospace; font-size: 13px; color: var(--white); display: block; word-break: break-all; margin-top: 4px;">TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6</span>
+                    <span style="font-size: 11px; color: var(--gray);">(USDT TRC20 — preferred)</span>
+                </div>
+            </div>
 
-        <button class="btn-close-popup" id="closePopupBtn">
-            <i class="fas fa-check-circle"></i> Got it, I'll complete payment
-        </button>
+            <button class="close-congrats" id="closeCongratsBtn">
+                <i class="fas fa-check-circle"></i> I Understood
+            </button>
+        </div>
     </div>
 
-    <!-- ============================================================
-    FOOTER
-    ============================================================ -->
+    <!-- ===== FOOTER ===== -->
     <footer class="footer">
-        <p>
-            &copy; 2026 <strong>ARK CREATOR</strong> · Sovereign Digital Estates ·
-            <a href="#" id="footerSupportLink">Support</a>
-        </p>
-        <p style="margin-top:6px; font-size:10px; opacity:0.5;">
-            Built for creators, gamers, and digital royals.
+        <div class="social-links">
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-youtube"></i></a>
+            <a href="#"><i class="fab fa-tiktok"></i></a>
+            <a href="#"><i class="fab fa-x-twitter"></i></a>
+        </div>
+        <div class="brand-footer">ARK<span>Creator</span> Estate</div>
+        <p style="font-size: 11px; margin-top: 6px; opacity: 0.5;">
+            &copy; 2026 — Sovereign Digital Plots for the Elite
         </p>
     </footer>
 
-    <!-- ============================================================
-    FIREBASE SDKs
-    ============================================================ -->
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+    <!-- ================================================ -->
+    <!-- FIREBASE SDK (আপনার কনফিগ)                      -->
+    <!-- ================================================ -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js">
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js">
+    </script>
 
     <script>
-        // ============================================================
-        //  FIREBASE CONFIG (YOUR PROVIDED)
-        // ============================================================
+        // ================================================
+        //  FIREBASE CONFIG (YOUR PROVIDED CONFIG)
+        // ================================================
         const firebaseConfig = {
             apiKey: "AIzaSyBXs5K-6pdWxFQ8l-WtjS3pqH8v6ocXZMM",
             authDomain: "create-project-62743.firebaseapp.com",
@@ -885,307 +1005,444 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        // ============================================================
-        //  STATE
-        // ============================================================
+        // ================================================
+        //  GLOBAL STATE
+        // ================================================
         let allPlots = [];
-        let currentBatch = 0;
-        const BATCH_SIZE = 10;
-        let isLoading = false;
-        let hasMore = true;
+        let visibleCount = 10; // প্রথমে ১০টি দেখাবে
+        const PLOTS_PER_PAGE = 10;
+        let selectedPlotId = null;
+        let isSubmitting = false;
 
         // DOM refs
         const grid = document.getElementById('plotGrid');
-        const loadingMore = document.getElementById('loadingMore');
-        const totalPlotsDisplay = document.getElementById('totalPlotsDisplay');
-        const occupiedPlotsDisplay = document.getElementById('occupiedPlotsDisplay');
-        const availablePlotsDisplay = document.getElementById('availablePlotsDisplay');
-        const minPriceDisplay = document.getElementById('minPriceDisplay');
-        const maxPriceDisplay = document.getElementById('maxPriceDisplay');
-
-        // Modal
-        const requestModal = document.getElementById('requestModal');
+        const loadMoreBtn = document.getElementById('loadMoreBtn');
+        const modal = document.getElementById('requestModal');
         const closeModalBtn = document.getElementById('closeModalBtn');
-        const openRequestBtn = document.getElementById('openRequestBtn');
-        const heroClaimBtn = document.getElementById('heroClaimBtn');
-        const requestForm = document.getElementById('requestForm');
-        const selectedPlotNumber = document.getElementById('selectedPlotNumber');
-        const reqName = document.getElementById('reqName');
-        const reqEmail = document.getElementById('reqEmail');
-        const reqWhatsApp = document.getElementById('reqWhatsApp');
-        const reqPlotNumber = document.getElementById('reqPlotNumber');
+        const claimForm = document.getElementById('claimForm');
+        const claimPlotSelect = document.getElementById('claimPlotSelect');
+        const claimPrice = document.getElementById('claimPrice');
+        const claimName = document.getElementById('claimName');
+        const claimEmail = document.getElementById('claimEmail');
+        const claimWhatsapp = document.getElementById('claimWhatsapp');
+        const claimSubmitBtn = document.getElementById('claimSubmitBtn');
+        const congratsPopup = document.getElementById('congratsPopup');
+        const congratsName = document.getElementById('congratsName');
+        const congratsPlot = document.getElementById('congratsPlot');
+        const closeCongratsBtn = document.getElementById('closeCongratsBtn');
+        const remainingCount = document.getElementById('remainingCount');
+        const remainingCount2 = document.getElementById('remainingCount2');
+        const totalPlotsEl = document.getElementById('totalPlots');
+        const claimedPlotsEl = document.getElementById('claimedPlots');
+        const availablePlotsEl = document.getElementById('availablePlots');
 
-        // Popup
-        const paymentPopup = document.getElementById('paymentPopup');
-        const closePopupBtn = document.getElementById('closePopupBtn');
-        const popupTitle = document.getElementById('popupTitle');
-        const popupSub = document.getElementById('popupSub');
-
-        // ============================================================
-        //  HELPERS
-        // ============================================================
+        // ================================================
+        //  প্লট ডেটা তৈরি / লোড
+        // ================================================
         function generatePlotData(count) {
+            const names = [
+                'Alex Rivera', 'Mia Chen', 'Liam O\'Brien', 'Zara Khan', 'Elena Petrov',
+                'James Kim', 'Aisha Patel', 'Carlos Gomez', 'Yuki Tanaka', 'Sophie Laurent',
+                'David Park', 'Nina Ivanova', 'Omar Hassan', 'Chloe Martin', 'Ethan Scott',
+                'Luna Kim', 'Noah Wilson', 'Emma Davis', 'Mason Lee', 'Olivia Brown'
+            ];
+            const socials = [
+                { platform: 'youtube', icon: 'fab fa-youtube' },
+                { platform: 'instagram', icon: 'fab fa-instagram' },
+                { platform: 'tiktok', icon: 'fab fa-tiktok' },
+                { platform: 'twitch', icon: 'fab fa-twitch' },
+                { platform: 'x-twitter', icon: 'fab fa-x-twitter' },
+                { platform: 'facebook', icon: 'fab fa-facebook' },
+            ];
+
             const plots = [];
-            const names = ['Alex Rivera', 'Luna Chen', 'Marcus King', 'Sofia Patel', 'Jay Thompson', 'Elena Cruz', 'Omar Hassan', 'Mia Wong', 'Liam O\'Brien', 'Zara Ahmed'];
-            const socials = ['@alexrive', '@lunacreates', '@marcusking', '@sofiapatel', '@jaythompson', '@elenacruz', '@omarhassan', '@miawong', '@liamobrien', '@zaraahmed'];
-            const basePrice = 50;
+            const startIdx = allPlots.length;
 
             for (let i = 0; i < count; i++) {
-                const number = i + 1;
-                // Price varies by position: center (index 0) most expensive, edges cheaper
-                let price = basePrice + Math.floor(Math.random() * 150);
-                if (i % 5 === 0) price += 100; // some premium
-                if (i % 7 === 0) price += 60;
+                const idx = startIdx + i;
+                const isAvailable = Math.random() > 0.35; // 65% available
+                const nameIdx = idx % names.length;
+                const socialIdx = idx % socials.length;
 
-                const occupied = Math.random() > 0.65; // 35% occupied for demo
-                const nameIdx = Math.floor(Math.random() * names.length);
+                // price based on position: middle plots more expensive
+                const basePrice = 49 + Math.floor(Math.random() * 80);
+                const positionBonus = (idx % 5 === 2 || idx % 5 === 3) ? 40 : 0; // center plots cost more
+                const price = basePrice + positionBonus;
 
                 plots.push({
-                    number: number,
+                    id: `plot_${idx + 1}`,
+                    number: idx + 1,
+                    name: isAvailable ? null : names[nameIdx],
+                    photo: isAvailable ? null : `https://i.pravatar.cc/150?img=${(idx % 70) + 1}`,
+                    socialLink: isAvailable ? null : `https://${socials[socialIdx].platform}.com/${names[nameIdx].toLowerCase().replace(' ', '')}`,
+                    socialPlatform: isAvailable ? null : socials[socialIdx].platform,
+                    socialIcon: isAvailable ? null : socials[socialIdx].icon,
                     price: price,
-                    occupied: occupied,
-                    name: occupied ? names[nameIdx] : '',
-                    photo: occupied ? `https://ui-avatars.com/api/?name=${names[nameIdx].replace(' ', '+')}&background=00BFFF&color=fff&size=128` : '',
-                    social: occupied ? `https://x.com/${socials[nameIdx]}` : '',
-                    socialIcon: 'fa-brands fa-x-twitter'
+                    isAvailable: isAvailable,
+                    claimedAt: isAvailable ? null : Date.now() - (Math.random() * 10000000000)
                 });
             }
             return plots;
         }
 
-        // ============================================================
-        //  RENDER PLOTS (with pagination)
-        // ============================================================
-        function renderPlots() {
-            const start = currentBatch * BATCH_SIZE;
-            const end = start + BATCH_SIZE;
-            const batch = allPlots.slice(start, end);
+        // ================================================
+        //  ফায়ারবেসে সেভ ও লোড
+        // ================================================
+        function savePlotsToFirebase(plots) {
+            const ref = db.ref('plots');
+            const obj = {};
+            plots.forEach(p => { obj[p.id] = p; });
+            ref.set(obj).catch(err => console.error('Save error:', err));
+        }
 
-            if (batch.length === 0) {
-                hasMore = false;
-                loadingMore.style.display = 'none';
+        function loadPlotsFromFirebase() {
+            const ref = db.ref('plots');
+            ref.on('value', (snapshot) => {
+                const data = snapshot.val();
+                if (data) {
+                    const plotsArray = Object.values(data);
+                    // sort by number
+                    plotsArray.sort((a, b) => a.number - b.number);
+                    allPlots = plotsArray;
+                } else {
+                    // প্রথমবার: ২০টি প্লট জেনারেট করি
+                    const initialPlots = generatePlotData(20);
+                    allPlots = initialPlots;
+                    savePlotsToFirebase(initialPlots);
+                }
+                renderPlots();
+                updateStats();
+                updateFomo();
+                populateSelect();
+            });
+        }
+
+        // ================================================
+        //  রেন্ডার প্লট
+        // ================================================
+        function renderPlots() {
+            const show = allPlots.slice(0, visibleCount);
+            grid.innerHTML = '';
+
+            if (show.length === 0) {
+                grid.innerHTML =
+                    '<p style="grid-column:1/-1; text-align:center; color:var(--gray); padding:60px 0;">No plots available. Loading...</p>';
                 return;
             }
 
-            batch.forEach(plot => {
+            show.forEach((plot, index) => {
                 const card = document.createElement('div');
-                card.className = `plot-card ${plot.occupied ? 'occupied' : ''}`;
-                card.dataset.plotNumber = plot.number;
+                card.className = 'plot-card' + (plot.isAvailable ? ' empty-card' : '');
+                card.style.animationDelay = (index * 0.04) + 's';
 
-                // Number badge
-                const numBadge = document.createElement('span');
-                numBadge.className = 'plot-number';
-                numBadge.textContent = `#${plot.number}`;
-                card.appendChild(numBadge);
+                const avatarContent = plot.isAvailable ?
+                    `<i class="fas fa-user-plus placeholder-icon"></i>` :
+                    `<img src="${plot.photo}" alt="${plot.name}" loading="lazy" />`;
 
-                // Price badge
-                const priceBadge = document.createElement('span');
-                priceBadge.className = 'plot-price';
-                priceBadge.textContent = `$${plot.price}`;
-                card.appendChild(priceBadge);
+                const statusClass = plot.isAvailable ? 'available' : 'sold';
+                const statusText = plot.isAvailable ? 'Available' : 'Claimed';
 
-                // Avatar or placeholder
-                if (plot.occupied && plot.photo) {
-                    const img = document.createElement('img');
-                    img.className = 'avatar';
-                    img.src = plot.photo;
-                    img.alt = plot.name;
-                    card.appendChild(img);
-                } else {
-                    const placeholder = document.createElement('div');
-                    placeholder.className = 'avatar-placeholder';
-                    placeholder.innerHTML = '<i class="fas fa-user"></i>';
-                    card.appendChild(placeholder);
-                }
+                const socialHtml = (!plot.isAvailable && plot.socialLink) ?
+                    `<div class="plot-social">
+                        <a href="${plot.socialLink}" target="_blank" title="${plot.socialPlatform}">
+                            <i class="${plot.socialIcon}"></i>
+                        </a>
+                    </div>` :
+                    '';
 
-                // Name
-                const nameEl = document.createElement('div');
-                nameEl.className = 'creator-name';
-                nameEl.textContent = plot.occupied ? plot.name : 'Available';
-                card.appendChild(nameEl);
+                const priceHtml = plot.isAvailable ?
+                    `<div class="plot-price">$${plot.price} <small>USD</small></div>` :
+                    '';
 
-                // Social link if occupied
-                if (plot.occupied && plot.social) {
-                    const link = document.createElement('a');
-                    link.className = 'social-link';
-                    link.href = plot.social;
-                    link.target = '_blank';
-                    link.innerHTML = `<i class="${plot.socialIcon}"></i>`;
-                    card.appendChild(link);
-                } else {
-                    const emptyLabel = document.createElement('div');
-                    emptyLabel.className = 'empty-label';
-                    emptyLabel.textContent = 'claim now';
-                    card.appendChild(emptyLabel);
-                }
+                const claimBtn = plot.isAvailable ?
+                    `<button class="claim-btn" data-plot-id="${plot.id}" data-plot-number="${plot.number}" data-plot-price="${plot.price}">
+                        <i class="fas fa-crown"></i> Claim Now
+                    </button>` :
+                    '';
 
-                // Click to open request with this plot number
-                card.addEventListener('click', () => {
-                    if (!plot.occupied) {
-                        openRequestModal(plot.number);
-                    } else {
-                        alert(`Plot #${plot.number} is already occupied by ${plot.name}.`);
-                    }
-                });
+                const claimText = plot.isAvailable ?
+                    `<div class="claim-text">Secure your digital estate</div>` :
+                    '';
+
+                card.innerHTML = `
+                    <span class="plot-number">#${plot.number}</span>
+                    <div class="avatar-circle">${avatarContent}</div>
+                    <div class="plot-name">${plot.isAvailable ? '— Available —' : plot.name}</div>
+                    ${socialHtml}
+                    ${priceHtml}
+                    <span class="plot-status ${statusClass}">${statusText}</span>
+                    ${claimText}
+                    ${claimBtn}
+                `;
 
                 grid.appendChild(card);
             });
 
-            currentBatch++;
-            if (end >= allPlots.length) {
-                hasMore = false;
-                loadingMore.style.display = 'none';
-            } else {
-                loadingMore.style.display = 'block';
-            }
+            // ক্লেইম বাটনে ইভেন্ট
+            document.querySelectorAll('.claim-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const id = btn.dataset.plotId;
+                    const number = btn.dataset.plotNumber;
+                    const price = btn.dataset.plotPrice;
+                    openRequestModal(id, number, price);
+                });
+            });
 
-            updateStats();
+            // লোড মোর বাটন শো / হাইড
+            loadMoreBtn.style.display = (visibleCount < allPlots.length) ? 'inline-flex' : 'none';
         }
 
-        // ============================================================
-        //  LOAD MORE (Infinite Scroll)
-        // ============================================================
-        function loadMorePlots() {
-            if (isLoading || !hasMore) return;
-            isLoading = true;
-            // Simulate async load (in real app, fetch from Firebase)
-            setTimeout(() => {
-                renderPlots();
-                isLoading = false;
-            }, 400);
-        }
-
-        // Intersection Observer for infinite scroll
-        const observer = new IntersectionObserver((entries) => {
-            if (entries[0].isIntersecting && hasMore) {
-                loadMorePlots();
-            }
-        }, { rootMargin: '0px 0px 200px 0px' });
-
-        // Observe the loadingMore element
-        if (loadingMore) {
-            observer.observe(loadingMore);
-        }
-
-        // ============================================================
-        //  UPDATE STATS
-        // ============================================================
+        // ================================================
+        //  স্ট্যাট আপডেট
+        // ================================================
         function updateStats() {
             const total = allPlots.length;
-            const occupied = allPlots.filter(p => p.occupied).length;
-            const available = total - occupied;
-            totalPlotsDisplay.textContent = total;
-            occupiedPlotsDisplay.textContent = occupied;
-            availablePlotsDisplay.textContent = available;
+            const claimed = allPlots.filter(p => !p.isAvailable).length;
+            const available = allPlots.filter(p => p.isAvailable).length;
 
-            const prices = allPlots.map(p => p.price);
-            if (prices.length) {
-                minPriceDisplay.textContent = '$' + Math.min(...prices);
-                maxPriceDisplay.textContent = '$' + Math.max(...prices);
+            totalPlotsEl.textContent = total;
+            claimedPlotsEl.textContent = claimed;
+            availablePlotsEl.textContent = available;
+        }
+
+        // ================================================
+        //  FOMO আপডেট
+        // ================================================
+        function updateFomo() {
+            const available = allPlots.filter(p => p.isAvailable).length;
+            const text = available <= 5 ?
+                `🔥 Only <strong>${available}</strong> plots remaining — hurry!` :
+                `Only <strong>${available}</strong> plots remaining!`;
+            remainingCount.innerHTML = text;
+            remainingCount2.textContent = available;
+        }
+
+        // ================================================
+        //  সিলেক্ট পপুলেট
+        // ================================================
+        function populateSelect() {
+            const available = allPlots.filter(p => p.isAvailable);
+            claimPlotSelect.innerHTML = '<option value="">— Choose a plot —</option>';
+            available.forEach(p => {
+                const opt = document.createElement('option');
+                opt.value = p.id;
+                opt.textContent = `#${p.number} — $${p.price} USD`;
+                claimPlotSelect.appendChild(opt);
+            });
+            // যদি সিলেক্টেড থাকে
+            if (selectedPlotId) {
+                claimPlotSelect.value = selectedPlotId;
+                const plot = allPlots.find(p => p.id === selectedPlotId);
+                if (plot) claimPrice.value = `$${plot.price} USD`;
             }
         }
 
-        // ============================================================
-        //  INITIALIZE DATA (simulate from Firebase)
-        // ============================================================
-        function initPlots() {
-            // In production, fetch from Firebase:
-            // db.ref('plots').once('value').then(snapshot => { ... })
-            // For demo, generate 50 plots
-            allPlots = generatePlotData(50);
-            currentBatch = 0;
-            hasMore = true;
-            grid.innerHTML = '';
-            renderPlots();
-        }
-
-        // ============================================================
-        //  MODAL LOGIC
-        // ============================================================
-        function openRequestModal(plotNumber) {
-            selectedPlotNumber.value = plotNumber || '';
-            reqPlotNumber.value = plotNumber || '';
-            requestModal.classList.add('active');
+        // ================================================
+        //  মডাল খোলা / বন্ধ
+        // ================================================
+        function openRequestModal(plotId, number, price) {
+            selectedPlotId = plotId;
+            claimPlotSelect.value = plotId;
+            claimPrice.value = `$${price} USD`;
+            modal.classList.add('open');
+            document.body.style.overflow = 'hidden';
         }
 
         function closeRequestModal() {
-            requestModal.classList.remove('active');
+            modal.classList.remove('open');
+            document.body.style.overflow = '';
+            claimName.value = '';
+            claimEmail.value = '';
+            claimWhatsapp.value = '';
+            claimPlotSelect.value = '';
+            claimPrice.value = '';
+            selectedPlotId = null;
         }
 
-        openRequestBtn.addEventListener('click', () => openRequestModal());
-        heroClaimBtn.addEventListener('click', () => openRequestModal());
         closeModalBtn.addEventListener('click', closeRequestModal);
-        requestModal.addEventListener('click', (e) => {
-            if (e.target === requestModal) closeRequestModal();
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeRequestModal();
         });
 
-        // ============================================================
-        //  REQUEST SUBMISSION
-        // ============================================================
-        requestForm.addEventListener('submit', async (e) => {
+        // ================================================
+        //  ক্লেইম ফর্ম সাবমিট
+        // ================================================
+        claimForm.addEventListener('submit', async (e) => {
             e.preventDefault();
 
-            const name = reqName.value.trim();
-            const email = reqEmail.value.trim();
-            const whatsapp = reqWhatsApp.value.trim();
-            const plotNum = reqPlotNumber.value.trim() || selectedPlotNumber.value || 'Not specified';
+            if (isSubmitting) return;
 
-            if (!name || !email || !whatsapp) {
-                alert('Please fill in all required fields.');
+            const name = claimName.value.trim();
+            const email = claimEmail.value.trim();
+            const whatsapp = claimWhatsapp.value.trim();
+            const plotId = claimPlotSelect.value;
+
+            if (!name || !email || !whatsapp || !plotId) {
+                alert('Please fill in all fields.');
                 return;
             }
 
-            // Save request to Firebase
-            const requestRef = db.ref('donation_requests'); // reusing same node
-            await requestRef.push({
-                name: name,
-                email: email,
-                whatsapp: whatsapp,
-                plotNumber: plotNum,
-                timestamp: Date.now(),
-                status: 'pending'
-            });
+            // প্লট ভ্যালিডেশন
+            const plot = allPlots.find(p => p.id === plotId);
+            if (!plot || !plot.isAvailable) {
+                alert('Sorry, this plot is no longer available.');
+                closeRequestModal();
+                return;
+            }
 
-            // Show payment popup
-            popupTitle.textContent = `🎉 Congratulations, ${name}!`;
-            popupSub.textContent = `You've successfully requested Plot #${plotNum}`;
-            paymentPopup.classList.add('active');
+            isSubmitting = true;
+            claimSubmitBtn.disabled = true;
+            claimSubmitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
 
-            // Close modal
-            closeRequestModal();
-            requestForm.reset();
+            try {
+                // 1. প্লট আপডেট (claimed)
+                const plotRef = db.ref(`plots/${plotId}`);
+                await plotRef.update({
+                    isAvailable: false,
+                    name: name,
+                    photo: `https://i.pravatar.cc/150?img=${Math.floor(Math.random() * 70) + 1}`,
+                    socialLink: `https://instagram.com/${name.toLowerCase().replace(' ', '')}`,
+                    socialPlatform: 'instagram',
+                    socialIcon: 'fab fa-instagram',
+                    claimedAt: Date.now()
+                });
+
+                // 2. রিকোয়েস্ট লগ
+                const requestRef = db.ref('donation_requests');
+                await requestRef.push({
+                    name: name,
+                    email: email,
+                    whatsapp: whatsapp,
+                    plotId: plotId,
+                    plotNumber: plot.number,
+                    price: plot.price,
+                    status: 'pending',
+                    timestamp: Date.now()
+                });
+
+                // 3. কংগ্র্যাটস দেখান
+                congratsName.textContent = name;
+                congratsPlot.textContent = `#${plot.number}`;
+                congratsPopup.classList.add('open');
+
+                // কনফেটি
+                confetti({
+                    particleCount: 150,
+                    spread: 70,
+                    origin: { y: 0.6 }
+                });
+
+                closeRequestModal();
+
+                // স্টেট আপডেট
+                allPlots = allPlots.map(p => {
+                    if (p.id === plotId) {
+                        return { ...p, isAvailable: false, name, photo: `https://i.pravatar.cc/150?img=${Math.floor(Math
+                                .random() * 70) + 1}`, socialLink: `https://instagram.com/${name.toLowerCase()
+                                .replace(' ', '')}`, socialPlatform: 'instagram', socialIcon: 'fab fa-instagram',
+                            claimedAt: Date.now() };
+                    }
+                    return p;
+                });
+
+                renderPlots();
+                updateStats();
+                updateFomo();
+                populateSelect();
+
+                // অটো লোড মোর যদি কম প্লট থাকে
+                if (allPlots.filter(p => p.isAvailable).length < 3) {
+                    addMorePlots();
+                }
+
+            } catch (error) {
+                console.error('Submission error:', error);
+                alert('Something went wrong. Please try again.');
+            } finally {
+                isSubmitting = false;
+                claimSubmitBtn.disabled = false;
+                claimSubmitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit Request';
+            }
         });
 
-        // ============================================================
-        //  CLOSE PAYMENT POPUP
-        // ============================================================
-        closePopupBtn.addEventListener('click', () => {
-            paymentPopup.classList.remove('active');
+        // ================================================
+        //  কংগ্র্যাটস বন্ধ
+        // ================================================
+        closeCongratsBtn.addEventListener('click', () => {
+            congratsPopup.classList.remove('open');
+        });
+        congratsPopup.addEventListener('click', (e) => {
+            if (e.target === congratsPopup) congratsPopup.classList.remove('open');
         });
 
-        // ============================================================
-        //  FOOTER SUPPORT LINK (dynamic)
-        // ============================================================
-        document.getElementById('footerSupportLink').addEventListener('click', (e) => {
-            e.preventDefault();
-            // Show support info
-            alert('📞 WhatsApp Support: +880 1576 940717\n\nFor any help regarding your plot claim, contact us 24/7.');
+        // ================================================
+        //  লোড মোর
+        // ================================================
+        loadMoreBtn.addEventListener('click', () => {
+            visibleCount += PLOTS_PER_PAGE;
+            renderPlots();
+            // যদি শেষে পৌঁছে যায় তবে আরও প্লট জেনারেট
+            if (visibleCount >= allPlots.length) {
+                addMorePlots();
+            }
         });
 
-        // ============================================================
-        //  START
-        // ============================================================
-        initPlots();
+        function addMorePlots() {
+            const newPlots = generatePlotData(10);
+            allPlots = [...allPlots, ...newPlots];
+            savePlotsToFirebase(allPlots);
+            renderPlots();
+            updateStats();
+            updateFomo();
+            populateSelect();
+        }
 
-        // ============================================================
-        //  (OPTIONAL) Real-time listener for new plots from Firebase
-        // ============================================================
-        // db.ref('plots').on('child_added', (snapshot) => {
-        //     const newPlot = snapshot.val();
-        //     allPlots.push(newPlot);
-        //     // re-render? For simplicity, we just reload
-        // });
-        console.log('ARK CREATOR · Sovereign Plots Engine Ready');
+        // ================================================
+        //  স্ক্রল টু প্লট
+        // ================================================
+        document.getElementById('scrollToPlots').addEventListener('click', () => {
+            document.getElementById('plotSection').scrollIntoView({ behavior: 'smooth' });
+        });
+
+        // ================================================
+        //  লোডার
+        // ================================================
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('loader').classList.add('loader-hide');
+            }, 1200);
+            loadPlotsFromFirebase();
+        });
+
+        // ================================================
+        //  প্লট সিলেক্ট চেঞ্জ — প্রাইস আপডেট
+        // ================================================
+        claimPlotSelect.addEventListener('change', () => {
+            const val = claimPlotSelect.value;
+            if (val) {
+                const plot = allPlots.find(p => p.id === val);
+                if (plot) claimPrice.value = `$${plot.price} USD`;
+            } else {
+                claimPrice.value = '';
+            }
+        });
+
+        // ================================================
+        //  পিরিয়ডিক FOMO রিফ্রেশ (প্রতি ১৫ সেকেন্ড)
+        // ================================================
+        setInterval(() => {
+            // শুধু ভিজুয়াল ইফেক্টের জন্য
+            const available = allPlots.filter(p => p.isAvailable).length;
+            if (available <= 3) {
+                document.querySelector('.fomo-tag').style.borderColor = '#ff4444';
+                document.querySelector('.fomo-tag').style.background = 'rgba(255,68,68,0.1)';
+            } else {
+                document.querySelector('.fomo-tag').style.borderColor = 'var(--gold)';
+                document.querySelector('.fomo-tag').style.background = 'rgba(212,175,55,0.12)';
+            }
+        }, 15000);
     </script>
+
 </body>
 </html>
